@@ -3,30 +3,29 @@ import Nav from './component/Nav'
 import NoteList from './component/NoteList'
 import NoteForm from './component/NoteForm'
 import {noteData} from './fireBaseConnect'
+import { connect } from 'react-redux';
 
-export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      
+
+class App extends Component {
+
+// Hàm Show Form
+  showForm = () => {
+    // console.log(this.props.isEdit);
+    
+    if(this.props.isEdit) {
+      return <NoteForm />
     }
   }
-  addData = (item) => {
-    noteData.push(item)
-  }
   render() {
-    // Lấy dữ liệu
-    // noteData.once('value').then(function(snapshot){
-    //   console.log(snapshot.val());
-    // })
+
     
     return (
       <div>
         <Nav/>
-        .<div className="container">
-          .<div className="row">
+        <div className="container">
+          <div className="row mt-4">
             <NoteList/>
-            <NoteForm />
+            {this.showForm()}
           </div>
         </div>
       </div>
@@ -34,6 +33,15 @@ export default class App extends Component {
   }
 }
 
+const mapStateToProps = state => {  
+  return {
+    isEdit: state.QuanLyNoteReducer.isEdit
+  }
+}
+
+
+
+export default connect(mapStateToProps, null)(App);
 
  //   const pushData = () => {
   //   var connectData = firebaseConnect.database().ref('DataNote');

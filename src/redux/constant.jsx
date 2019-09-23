@@ -1,2 +1,6 @@
 export const ADD_NOTE = 'ADD_NOTE';
 export const LAY_DANH_SACH_NOTE = 'LAY_DANH_SACH_NOTE';
+export const CHANGE_EDIT_STATUS = 'CHANGE_EDIT_STATUS';
+export const GET_EDIT_DATA = 'GET_EDIT_DATA';
+export const EDITING_DATA = 'EDITING_DATA';
+

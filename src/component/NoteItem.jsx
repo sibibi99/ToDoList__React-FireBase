@@ -1,6 +1,15 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 
-export default class NoteItem extends Component {
+
+class NoteItem extends Component {
+  editNote = () => {
+    this.props.changStatus()
+    //console.log(this.props.Note);
+    // Đẩy object Note lên Reducer
+    this.props.getEditData(this.props.Note)
+    
+  }
   render() {
     return (
       <div className="card mb-2">
@@ -14,7 +23,7 @@ export default class NoteItem extends Component {
               </h5>
             </div>
             <div className="col-md-2 btn-group">
-              <button className='btn btn-warning'>Sua</button>
+              <button onClick = {() => this.editNote()} className='btn btn-warning'>Sua</button>
               <button className='btn btn-danger'>Xoa</button>
             </div>
           </div>
@@ -28,3 +37,21 @@ export default class NoteItem extends Component {
     )
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    changStatus: () => {
+      dispatch({
+        // Không cần đưa lên Action, gọi trực tiếp lên Reducer
+        type: 'CHANGE_EDIT_STATUS'
+      })
+    },
+    getEditData: (editObject) => {
+      dispatch({
+        type: 'GET_EDIT_DATA',
+        editObject
+      })
+    }
+  }
+}
+export default connect(null, mapDispatchToProps)(NoteItem);

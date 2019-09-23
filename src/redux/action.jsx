@@ -1,6 +1,5 @@
 import * as types from './constant';
 import { noteData } from '../fireBaseConnect'
-import { type } from 'os';
 
 
 export const addNoteAction = (nhanVao) =>{
@@ -12,9 +11,4 @@ export const addNoteAction = (nhanVao) =>{
 
   }
 }
-export const layDanhSachNoteAction = () =>{
-  return dispatch => {        
- 
-  }
-};
 
