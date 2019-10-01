@@ -4,7 +4,11 @@ import { noteData } from '../fireBaseConnect';
 const stateDefault = {
   DanhSachNote: [],
   isEdit: false,
-  editItem: {}
+  editItem: {},
+  isAdd: false,
+  AlernShow: false,
+  AlernContent: '',
+  AlernType: ''
 }
 
 const QuanLyNoteReducer = (state = stateDefault, action) => {
@@ -18,18 +22,41 @@ const QuanLyNoteReducer = (state = stateDefault, action) => {
       case types.CHANGE_EDIT_STATUS :{
       return {...state, isEdit: !state.isEdit}
       }
+      // Sự Kiện khi add Note hoặc Sửa
+      case types.CHANGE_ADD_STATUS :{
+        console.log('isAdd');
+        
+      return {...state, isAdd: !state.isAdd}
+      }
+      // Sự Kiện Aler
+      case types.ALERN_ON :{        
+      return {...state, AlernShow: true,
+         AlernContent: action.AlernContent,
+         AlernType: action.AlernType,
+        }
+      }
+      case types.ALERN_OFF :{        
+      return {...state, AlernShow: false}
+      }
       case types.GET_EDIT_DATA :{
         //console.log(action.editObject);      
       return {...state, editItem: action.editObject}
       }
       case types.EDITING_DATA :{
         //Update dữ liệu lên FireBase
-        // console.log(action.editObject);        
+        console.log(action.editObject);        
         noteData.child(action.editObject.id).update({
-          title: action.editObject.noteTitle,
+          noteTitle: action.editObject.noteTitle,
           noteContent: action.editObject.noteContent
         })  
-        console.log('cao nhat thanh cong');
+        console.log('Cap Nhat Thanh Cong!');
+            
+      return {...state, editItem: {}}
+      }
+      case types.DELETE_ITEM :{
+       
+        noteData.child(action.idItem).remove()  
+        console.log('Xoa Thanh Cong!');
             
       return {...state, editItem: {}}
       }

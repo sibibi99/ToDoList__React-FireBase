@@ -38,7 +38,7 @@ class NoteList extends Component {
       var arrayData = [];
       notes.forEach(element => {
         const key = element.key;
-        const noteTitle = element.val().title;
+        const noteTitle = element.val().noteTitle;
         const noteContent = element.val().noteContent;
         arrayData.push({
           id: key,

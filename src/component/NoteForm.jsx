@@ -48,6 +48,8 @@ class NoteForm extends Component {
       this.props.editDataStore(editObject)
       // Đóng Form
       this.props.changStatus();
+      // Gọi hàm THông báo
+      this.props.alernOn('Sửa Thành Công!', 'warning')
 
     } else { // Trường Hợp Thêm Mới
       var item = {};
@@ -57,27 +59,45 @@ class NoteForm extends Component {
       // this.props.getData(item);
       // alert('Them moi' + JSON.stringify(item) + 'Thanh Cong!')
       this.props.addNoteAction(item)
+       // Đóng Form
+       this.props.changStatus();
+       // Gọi hàm THông báo
+       this.props.alernOn('Thêm Mới Thành Công!', 'success')
     }
-
+  }
+  // Render Tiêu đề
+  titleNote = () => {
+    if(this.props.isAdd){
+      return <h3>Thêm Note mới</h3>
+    } else {
+      return <h3>Sửa Note</h3>
+    }
+  }
+  // Render Button
+  ButtonNote = () => {
+    if(this.props.isAdd){
+      return <button onClick={() => this.getData(this.state.noteTitle, this.state.noteContent)} type='reset' className="btn btn-danger btn-block">Lưu</button>
+    } else {
+      return <button onClick={() => this.getData(this.state.noteTitle, this.state.noteContent)} type='reset' className="btn btn-warning btn-block">Cập Nhật</button>
+    }
   }
 
   render() {
     // console.log(this.props.editItem);
 
     return (
-      <div className="col-4">
-        <h3>Thêm Note</h3>
+     <div classname="col-4" style={{backgroundColor: '#0c8877', padding: 20, borderRadius: 5, color: 'yellow'}}>
+        {this.titleNote()}
         <form>
           <div className="form-group">
             <label htmlFor="noteTitle">Tên note</label>
             <input defaultValue={this.props.editItem.noteTitle} onChange={(e) => this.isChange(e)} type="text" name="noteTitle" id="noteTitle" className="form-control" placeholder="Tiêu đề note" aria-describedby="noteTitle" />
-            <small id="noteTitle" className="text-muted">Điền tiêu đề vào đây</small>
           </div>
           <div className="form-group">
             <label htmlFor="noteContent">Nội dung note</label>
             <textarea onChange={(e) => this.isChange(e)} type="text" name="noteContent" id="noteTitle" className="form-control" placeholder="Nội dung note" aria-describedby="noteTitle" defaultValue={this.props.editItem.noteContent} />
           </div>
-          <button onClick={() => this.getData(this.state.noteTitle, this.state.noteContent)} type='reset' className="btn btn-success btn-block">Lưu</button>
+          {this.ButtonNote()}
         </form>
       </div>
     )
@@ -86,7 +106,8 @@ class NoteForm extends Component {
 
 const mapStateToProps = state => {
   return {
-    editItem: state.QuanLyNoteReducer.editItem
+    editItem: state.QuanLyNoteReducer.editItem,
+    isAdd: state.QuanLyNoteReducer.isAdd
   }
 }
 
@@ -104,6 +125,19 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         // Không cần đưa lên Action, gọi trực tiếp lên Reducer
         type: 'CHANGE_EDIT_STATUS'
+      })
+    },
+    alernOn: (AlernContent, AlernType) => {
+      dispatch({
+        // BẮt Sự kiện Aler
+        type: 'ALERN_ON',
+        AlernContent,
+        AlernType
+      })
+    },
+    alernOff: () => {
+      dispatch({    
+        type: 'ALERN_OFF'
       })
     },
   }
